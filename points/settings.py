@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+# https: // pypi.org/project/python-decouple/
 from decouple import config, Csv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -50,6 +51,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+
+if DEBUG:
+    INSTALLED_APPS.append('livereload')
+    MIDDLEWARE.append('livereload.middleware.LiveReloadScript')
 
 ROOT_URLCONF = 'points.urls'
 
@@ -137,10 +143,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # --------------------------------- security --------------------------------- #
 
 SECURE_HSTS_SECONDS = 360
-SECURE_HSTS_INCLUDE_SUBDOMAINS = not config('DEBUG', cast=bool, default=False)
-SECURE_HSTS_PRELOAD = not config('DEBUG', cast=bool, default=False)
 
-SECURE_SSL_REDIRECT = not config('DEBUG', cast=bool, default=False)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG
+SECURE_HSTS_PRELOAD = not DEBUG
 
-SESSION_COOKIE_SECURE = not config('DEBUG', cast=bool, default=False)
-CSRF_COOKIE_SECURE = not config('DEBUG', cast=bool, default=False)
+SECURE_SSL_REDIRECT = not DEBUG
+
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
