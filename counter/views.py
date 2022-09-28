@@ -34,8 +34,14 @@ def group_view(request, group):
 
         else:
 
+            if request.POST["offset"]:
+                offset = int(request.POST["offset"])
+            else:
+                return render(request, "group.html", {
+                    'record': get_object_or_404(PointsRecord, pk=group)
+                })
+
             current_points = getattr(record_obj, 'points')
-            offset = int(request.POST["offset"])
 
             setattr(record_obj, 'points', current_points+offset)
             record_obj.save(update_fields=['points'])
