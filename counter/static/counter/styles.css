@@ -29,3 +29,16 @@
     font-size: 8em;
   }
 }
+
+#groups-row :nth-child(1) .card {
+  background-color: rgb(247, 123, 123);
+}
+#groups-row :nth-child(2) .card {
+  background-color: rgb(144, 144, 247);
+}
+#groups-row :nth-child(3) .card {
+  background-color: rgb(144, 247, 158);
+}
+#groups-row :nth-child(4) .card {
+  background-color: rgb(235, 247, 144);
+}
