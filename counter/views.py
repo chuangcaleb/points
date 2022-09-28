@@ -5,6 +5,17 @@ from django.shortcuts import get_object_or_404, render
 
 
 def index(request):
+
+    if request.method == "POST":
+
+        record_obj = PointsRecord.objects.all()
+
+        if 'reset' in request.POST:
+
+            # setattr(record_obj, 'points', 0)
+            # record_obj.save(update_fields=['points'])
+            record_obj.update(points=0)
+
     return render(request, "index.html", {
         'pointsrecords': PointsRecord.objects.all()
     })
@@ -15,7 +26,6 @@ def group_view(request, group):
     if request.method == "POST":
 
         record_obj = get_object_or_404(PointsRecord, pk=group)
-        print(request.POST)
 
         if 'reset' in request.POST:
 
