@@ -35,10 +35,13 @@ class Group(models.Model):
 
 class PointsHistory(models.Model):
     # group = models.CharField(max_length=200, primary_key=True)
-    group = models.OneToOneField(
-        Group, on_delete=models.CASCADE, related_name="history_group", primary_key=True
+    group = models.ForeignKey(
+        Group, on_delete=models.CASCADE, related_name="history_group"
     )
     offset = models.IntegerField(default=0, null=False)
 
     class Meta:
         verbose_name_plural = "Points histories"
+
+    def __str__(self):
+        return f"{self.group}: {self.offset} points"
