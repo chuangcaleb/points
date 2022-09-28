@@ -127,10 +127,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # --------------------------------- security --------------------------------- #
 
 SECURE_HSTS_SECONDS = 360
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
+SECURE_HSTS_INCLUDE_SUBDOMAINS = not config('DEBUG', cast=bool, default=False)
+SECURE_HSTS_PRELOAD = not config('DEBUG', cast=bool, default=False)
 
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = not config('DEBUG', cast=bool, default=False)
 
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = not config('DEBUG', cast=bool, default=False)
+CSRF_COOKIE_SECURE = not config('DEBUG', cast=bool, default=False)
