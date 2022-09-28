@@ -18,6 +18,9 @@ def index(request):
             # record_obj.save(update_fields=['points'])
             record_obj.update(points=0)
 
+            group_histories = PointsHistory.objects.all()
+            group_histories.delete()
+
     return render(request, "index.html", {
         'groups': Group.objects.all()
     })
