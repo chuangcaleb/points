@@ -1,3 +1,8 @@
+body {
+  width: 100vw;
+  overflow-x: hidden;
+}
+
 .group-header {
   font-size: 2.8em;
 }
