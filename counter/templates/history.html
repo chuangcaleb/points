@@ -26,12 +26,12 @@
 		{% for record in history %}
 		<tr>
 			<td style="color:{{record.p}};">{{record.o}}</td>
-			<td style="color:{{record.p}};">{{record.s}}</td>
+			<td>{{record.s}}</td>
 		</tr>
 
 		{% empty %}
 		<tr>
-			<td colspan="2">No History Record</td>
+			<td colspan="2" class="fw-normal">No History Record</td>
 		</tr>
 		{% endfor %}
 	</table>
