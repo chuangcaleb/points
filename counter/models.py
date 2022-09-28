@@ -11,3 +11,6 @@ class PointsRecord(models.Model):
     @property
     def uppercase_group(self):
         return self.group.upper()
+
+    def __str__(self):
+        return self.uppercase_group

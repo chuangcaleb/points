@@ -11,7 +11,31 @@ def index(request):
 
 
 def group_view(request, group):
-    return render(request, "group.html", {
-        'group': get_object_or_404(PointsRecord, pk=group)
+    # First time loading the page
+    if request.method == "POST":
 
-    })
+        record_obj = get_object_or_404(PointsRecord, pk=group)
+        print(request.POST)
+
+        if 'reset' in request.POST:
+
+            setattr(record_obj, 'points', 0)
+            record_obj.save(update_fields=['points'])
+
+        else:
+
+            current_points = getattr(record_obj, 'points')
+            offset = int(request.POST["offset"])
+
+            setattr(record_obj, 'points', current_points+offset)
+            record_obj.save(update_fields=['points'])
+
+        return render(request, "group.html", {
+            'record': get_object_or_404(PointsRecord, pk=group)
+        })
+
+    else:
+
+        return render(request, "group.html", {
+            'record': get_object_or_404(PointsRecord, pk=group)
+        })

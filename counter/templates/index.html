@@ -13,6 +13,8 @@
 				<div class="card-body py-xl-5">
 					<h2 class="group-header fw-bold my-0 my-xl-2">{{ record.uppercase_group }}</h2>
 					<p class="group-points my-0 my-xl-3">{{ record.points }}</p>
+					<a href="{% url 'group' record.group %}" class="stretched-link">
+					</a>
 				</div>
 			</div>
 		</div>
