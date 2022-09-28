@@ -4,11 +4,16 @@
 
 <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
 	<div class="offcanvas-header">
-		<h5 class="offcanvas-title" id="offcanvasExampleLabel">Options</h5>
+		<h5 class="offcanvas-title" id="offcanvasExampleLabel">Menu</h5>
 		<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 	</div>
 	<div class="offcanvas-body">
-		<form action="" method="post">
+
+		{% for record in pointsrecords %}
+		<a href="{% url 'group' record.group %}" class="btn btn-primary">{{record.uppercase_group}}</a>
+		{% endfor %}
+
+		<form action="" method="post" class="my-3">
 			{% csrf_token %}
 			{% comment %} <button type="submit" name="reset" value="" class="btn btn-outline-danger">Reset All</button>
 			{% endcomment %}
