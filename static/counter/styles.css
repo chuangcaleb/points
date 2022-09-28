@@ -2,9 +2,16 @@
   font-size: 2.8em;
 }
 
+.group-points {
+  font-size: 4em;
+}
+
 @media only screen and (min-width: 992px) {
   .group-header {
     font-size: 4em;
+  }
+  .group-points {
+    font-size: 5em;
   }
 }
 
@@ -12,8 +19,21 @@
   .group-header {
     font-size: 4.5em;
   }
+  .group-points {
+    font-size: 8em;
+  }
 }
 
-.group-points {
-  font-size: 5em;
+#groups-row :nth-child(1) .card {
+  background-color: rgb(247, 123, 123);
+}
+#groups-row :nth-child(2) .card {
+  background-color: rgb(144, 144, 247);
+}
+#groups-row :nth-child(3) .card {
+  background-color: rgb(144, 247, 158);
+}
+
+.group-card:hover {
+  border: 2px black solid;
 }
