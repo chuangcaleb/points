@@ -14,3 +14,8 @@ class PointsRecord(models.Model):
 
     def __str__(self):
         return self.uppercase_group
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['group'], name='group_idx'),
+        ]
