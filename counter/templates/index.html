@@ -3,17 +3,23 @@
 {% block body %}
 
 
-<div class="row gx-5">
+<div class="container-fluid">
+	<div class="row gy-3">
 
-	{% for record in pointsrecords %}
+		{% for record in pointsrecords %}
 
-	<div class="col-12 col-lg text-center border p-3">
-		<h2 class="group-header fw-bold my-2">{{ record.uppercase_group }}</h2>
-		<p class="group-points my-3">{{ record.points }}</p>
+		<div class="col-12 col-lg">
+			<div class="card text-center">
+				<div class="card-body py-xl-5">
+					<h2 class="group-header fw-bold my-0 my-xl-2">{{ record.uppercase_group }}</h2>
+					<p class="group-points my-0 my-xl-3">{{ record.points }}</p>
+				</div>
+			</div>
+		</div>
+
+		{% endfor %}
+
 	</div>
-
-	{% endfor %}
-
 </div>
 
 {% endblock %}
