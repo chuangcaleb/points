@@ -1,4 +1,5 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, HttpResponseRedirect
+from django.urls import reverse
 
 from .models import Group, PointsHistory
 
@@ -64,3 +65,23 @@ def group_view(request, group):
 
     # At any GET and at the end of POST, render
     return _render(request, group)
+
+
+def history_view(request, group):
+
+    history_records = PointsHistory.objects.values_list(
+        'offset', flat=True).filter(group=group).reverse()
+    history_table = [
+        {
+            'p': "green" if offset > 0 else "red",
+            'o': offset,
+            's': sum(history_records[0:i+1])
+        }
+        for i, offset in enumerate(history_records)
+    ]
+    print(history_table)
+
+    return render(request, "history.html", {
+        'group': get_object_or_404(Group, pk=group),
+        'history': list(history_table)
+    })
