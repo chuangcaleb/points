@@ -75,10 +75,20 @@ WSGI_APPLICATION = 'points.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': config('DATABASE_POINTS_ENGINE'),
+        'NAME': config('DATABASE_POINTS_NAME'),
+        'USER': config('DATABASE_POINTS_USER'),
+        'PASSWORD': config('DATABASE_POINTS_PASSWORD'),
+        'HOST': config('DATABASE_POINTS_HOST'),
     }
 }
 
