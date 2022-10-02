@@ -37,3 +37,10 @@
 .group-card:hover {
   border: 2px black solid;
 }
+
+.points-btn,
+.fixed-values {
+  font-size: 1.5em;
+  min-width: 5em;
+  margin: 0.5em 0.5em;
+}
