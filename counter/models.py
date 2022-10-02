@@ -3,10 +3,21 @@ from django.db import models
 # Create your models here.
 
 
+class Event(models.Model):
+
+    name = models.CharField(max_length=200, primary_key=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Group(models.Model):
 
     name = models.CharField(max_length=200, primary_key=True)
     points = models.IntegerField(default=0, null=False)
+    event = models.ForeignKey(
+        Event, on_delete=models.CASCADE, related_name="event_group", null=True, blank=True
+    )
 
     class Meta:
         indexes = [
@@ -19,18 +30,6 @@ class Group(models.Model):
 
     def __str__(self):
         return self.uppercase_name
-
-
-# class PointsRecord(models.Model):
-
-#     group = models.OneToOneField(
-#         Group, on_delete=models.CASCADE, related_name="points_group", primary_key=True
-#     )
-#     # group = models.CharField(max_length=200, primary_key=True)
-#     points = models.IntegerField(default=0, null=False)
-
-#     def __str__(self):
-#         return f"{self.group}: {self.points} points"
 
 
 class PointsHistory(models.Model):
