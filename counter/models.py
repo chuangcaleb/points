@@ -38,7 +38,7 @@ class Group(models.Model):
         return self.name.upper()
 
     def __str__(self):
-        return self.uppercase_name
+        return f"{self.event}: {self.uppercase_name}"
 
 
 class PointsHistory(models.Model):

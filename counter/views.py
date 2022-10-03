@@ -59,7 +59,7 @@ def event_view(request, event):
                 'groups': get_groups()
             })
 
-        if 'delete' in request.POST:
+        if 'delete_event' in request.POST:
             # delete event, return to index
             event = get_object_or_404(Event, slug=event)
             event.delete()  # This delete cascades to delete relevant groups
@@ -96,6 +96,11 @@ def group_view(request, event, group):
     if request.method == "POST":
 
         group_obj = get_object_or_404(Group, pk=group)
+
+        if 'delete_group' in request.POST:
+
+            group_obj.delete()
+            return redirect('event', event)
 
         if 'reset' in request.POST:
 

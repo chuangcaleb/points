@@ -12,13 +12,21 @@
 {% block body %}
 
 <a href="{% url 'event' event.slug %}">
-	<button type="button" class=" btn btn-floating" style="top:0px;">
+	<button type="button" class="btn" style="top:0px;">
 		<i class="bi bi-arrow-left-circle-fill" style="font-size:2.7em;"></i>
 	</button></a>
 <a href="{% url 'history' event.slug group.name %}">
-	<button type="button" class=" btn btn-floating" style="top:5em;">
+	<button type="button" class="btn">
 		<i class="bi bi-clock-history" style="font-size:2.7em;"></i>
 	</button></a>
+<form action="" method="post" class="d-inline position-absolute end-0">
+	{% csrf_token %}
+	<button type="submit" class="btn" name="delete_group"
+		onclick="return confirm('Are you sure you want to delete {{group.uppercase_name}}?')">
+		<i class="bi bi-x-circle-fill" style="font-size:2.7em;"></i>
+	</button></a>
+</form>
+
 
 <div class="container text-center">
 
