@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render, HttpResponseRedirect, redirect
 from django.urls import reverse
 
-from counter.forms import EventForm
+from counter.forms import EventForm, GroupForm
 
 from .models import Event, Group, PointsHistory
 
@@ -12,13 +12,12 @@ def index(request):
 
     if request.method == "POST":
 
-        record_obj = Group.objects.all()
         form = EventForm(request.POST)
 
         if form.is_valid():
 
             # Create entry in User model
-            event = form.save()
+            form.save()
 
         return render(request, "index.html", {
             'events': Event.objects.all(),
@@ -35,10 +34,30 @@ def index(request):
 
 def event_view(request, event):
 
-    groups_obj = Group.objects.filter(
-        event__slug=event)  # event.slug = event slug
+    def get_groups():
+        # event.slug = event slug
+        return Group.objects.filter(event__slug=event)
 
     if request.method == "POST":
+
+        if 'name' in request.POST:
+
+            form = GroupForm(request.POST)
+
+            if form.is_valid():
+
+                group = form.save(commit=False)
+                group.points = 0
+                group.event_id = get_object_or_404(Event, slug=event)
+
+                # Create entry in User model
+                form.save()
+
+            return render(request, "event.html", {
+                'event': get_object_or_404(Event, slug=event),
+                'form': form,
+                'groups': get_groups()
+            })
 
         if 'delete' in request.POST:
             # delete event, return to index
@@ -48,6 +67,8 @@ def event_view(request, event):
             return redirect('index')
 
         if 'reset' in request.POST:
+
+            groups_obj = get_groups()
 
             # Update all groups to have 0 points
             groups_obj.update(points=0)
@@ -59,7 +80,8 @@ def event_view(request, event):
 
     return render(request, "event.html", {
         'event': get_object_or_404(Event, slug=event),
-        'groups': groups_obj
+        'form': GroupForm(),
+        'groups': get_groups()
     })
 
 
@@ -120,7 +142,6 @@ def history_view(request, event, group):
         }
         for i, offset in enumerate(history_records)
     ]
-    print(history_table)
 
     return render(request, "history.html", {
         'event': get_object_or_404(Event, slug=event),

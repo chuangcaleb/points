@@ -23,20 +23,29 @@
 	</div>
 	<div class="offcanvas-body">
 
-		{% comment %} {% for group in groups %}
-		<a href="{% url 'group' event.slug group.name %}"
-			class="btn btn-primary btn-lg my-3">{{group.uppercase_name}}</a>
-		{% endfor %} {% endcomment %}
-
-
-		<form action="" method="post" class="d-block">
+		<form action="" method="post">
 			{% csrf_token %}
-			{% comment %} <button type="submit" name="reset" value="" class="btn btn-outline-danger">Reset All</button>
-			{% endcomment %}
+
+			<div class="mb-4">
+				<div class="input-group input-group-lg">
+					<input aria-describedby="New Group" aria-label="New Group" class="form-control" id="input"
+						name="name" placeholder="New Group" type="text">
+					<button type="submit" class="btn btn-primary" id="submit">
+						<i class="bi bi-plus-circle-fill" style="font-size:1em;"></i>
+					</button>
+				</div>
+				<span style="color:red; list-style-type: none;">
+					{{ form.name.errors }}
+					{{ form.non_field_errors }}
+				</span>
+			</div>
+
 			<input type="submit" onclick="return confirm('Are you sure you want to reset everyone\'s points?')"
-				name="reset" value="Reset All Points" class="btn btn-lg btn-outline-primary mb-2" />
+				name="reset" value="Reset All Points" class="btn btn-lg btn-outline-primary mb-2 d-block" />
+
 			<input type="submit" onclick="return confirm('WARNING: Are you sure you want to DELETE {{event.name}}?')"
-				name="delete" value="DELETE {{event.name}}" class="btn btn-lg btn-danger" />
+				name="delete" value="DELETE {{event.name}}" class="btn btn-lg btn-danger d-block" />
+
 		</form>
 	</div>
 </div>
