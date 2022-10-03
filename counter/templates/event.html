@@ -1,8 +1,39 @@
 {% extends "layout.html" %}
 
 {% block headerinsert %}
+{% if event.font_link %}
+	<link rel="preconnect" href="https://fonts.googleapis.com"> 
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+	<link href="{{event.font_link}}" rel="stylesheet">
+{% endif %}
 <style>
-
+	{% if event.bg_url %}
+	#main {
+		background-image: url({{event.bg_url}});
+	}
+	{% endif %}
+	
+	.group-card {
+		{% if event.font %}
+		font-family: {{event.font | safe}};
+		{% endif %}
+		{% if event.color %}
+		color: {{event.color}};
+		{% endif %}
+		{% if event.default_card_color %}
+		background-color: {{event.default_card_color}};
+		{% endif %}
+	}
+	.group-header{
+		{% if event.heading_size %}
+		font-size: {{event.heading_size}};
+		{% endif %}
+	}
+	.group-points{
+		{% if event.points_size %}
+		font-size: {{event.points_size}};
+		{% endif %}
+	}
 </style>
 {% endblock %}
 
@@ -50,27 +81,38 @@
 			</div>
 		</form>
 
-		<form action="" method="post" class="mb-3 border bg-light p-2">
+		<form action="" method="post" class="mb-4 border bg-light p-2">
 			{% csrf_token %}
 
-			{{css_form}}
+			<div id="form-body" class="py-2">
 
-			<button type="submit" class="btn btn-primary d-block mt-3" id="submit">
+				{% if css_form.subject.errors %}
+				<ol>
+					{% for error in form.subject.errors %}
+					<li><strong>{{ error|escape }}</strong></li>
+					{% endfor %}
+				</ol>
+				{% endif %}
+
+				{% for field in css_form %}
+				<p>
+					{{ field.label_tag }}<br>
+					{{ field }}
+
+					{% if field.help_text %}
+					<br> <small style="color: grey">{{ field.help_text }}</small>
+					{% endif %}
+
+					{% for error in field.errors %}
+					<p style="color: red">{{ error }}</p>
+					{% endfor %}
+				</p>
+				{% endfor %}
+			</div>
+
+			<button type="submit" class="btn btn-primary" id="submit">
 				<i class="bi bi-pencil-fill" style="font-size:1em;"></i> Update CSS
 			</button>
-
-			{% comment %} <div class="mb-4">
-				<textarea aria-describedby="Update CSS" aria-label="Update CSS" class="form-control" id="input"
-					name="css" placeholder="Update CSS" type="text"></textarea>
-				<button type="submit" class="btn btn-primary" id="submit">
-					<i class="bi bi-pencil-fill" style="font-size:1em;"></i> Update
-				</button>
-				<span style="color:red; list-style-type: none;">
-					{{ name_form.name.errors }}
-					{{ name_form.non_field_errors }}
-				</span>
-			</div> {% endcomment %}
-
 		</form>
 
 		<form action="" method="post">
@@ -92,8 +134,8 @@
 </button>
 
 
-<div class="container-fluid ">
-	<div class="row gy-3" id="groups-row">
+<div class="container-fluid d-flex h-100 position-absolute top-0">
+	<div class="row gy-3 my-auto w-100" id="groups-row">
 
 		{% for group in groups %}
 

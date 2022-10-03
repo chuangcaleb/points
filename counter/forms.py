@@ -20,7 +20,13 @@ class NewGroupForm(ModelForm):
 class UpdateCssForm(ModelForm):
     class Meta:
         model = Event
-        fields = ['bg_url']
+        exclude = ['name', 'slug']
         labels = {
             'bg_url': 'Background Image URL',
+            'font': 'Font Family',
+            'font_link': 'Google Font URL',
+            'color': "Text Color",
+            'default_card_color': "Default Card Colour",
+            'heading_size': "Heading Font Size",
+            'points_size': "Points Font Size",
         }

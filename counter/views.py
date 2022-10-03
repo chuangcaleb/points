@@ -50,7 +50,6 @@ def event_view(request, event):
         })
 
     if request.method == "POST":
-        print(request.POST)
 
         # delete event, return to index
         if 'delete_event' in request.POST:

@@ -1,5 +1,6 @@
 from django.db import models
 from django.template.defaultfilters import slugify
+import html
 
 # Create your models here.
 
@@ -8,15 +9,26 @@ class Event(models.Model):
 
     name = models.CharField(max_length=200, primary_key=True)
     slug = models.SlugField('slug', max_length=64)
-    # css = models.TextField(default="", blank=True)
-    # slug = models.SlugField('slug', max_length=64, unique=True, null=False)
     bg_url = models.CharField(max_length=500, null=True, blank=True)
-    # color = models.CharField(max_length=500, null=True, blank=True)
+    font = models.CharField(max_length=100, null=True, blank=True)
+    font_link = models.CharField(max_length=300, null=True, blank=True)
+    color = models.CharField(max_length=20, null=True, blank=True)
+    default_card_color = models.CharField(max_length=20, null=True, blank=True)
+    heading_size = models.CharField(max_length=5, null=True, blank=True)
+    points_size = models.CharField(max_length=5, null=True, blank=True)
 
     def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
+
+        def sanitize_css(string):
+            temp_font = html.escape(string)
+            return temp_font.replace("&#x27;", "'")
+
+        # Sanitize font css
+        self.font = sanitize_css(self.font)
+
         # Only generates the slug on first creation
         if not self.slug:
             self.slug = slugify(self.name)
@@ -31,6 +43,7 @@ class Group(models.Model):
         Event, on_delete=models.CASCADE, related_name="event_group"
     )
     slug = models.SlugField('slug', max_length=64, null=True)
+    color = models.CharField(max_length=20, null=True, blank=True)
 
     class Meta:
         indexes = [
@@ -45,6 +58,7 @@ class Group(models.Model):
         return f"{self.event}: {self.uppercase_name}"
 
     def save(self, *args, **kwargs):
+
         # Slugify
         if not self.slug:
             self.slug = slugify(self.name)
