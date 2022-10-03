@@ -9,8 +9,8 @@
 	</div>
 	<div class="offcanvas-body">
 
-		{% for group in groups %}
-		<a href="{% url 'group' group.name %}" class="btn btn-primary btn-lg">{{group.uppercase_name}}</a>
+		{% for event in events %}
+		<a href="{% url 'event' event %}" class="btn btn-primary btn-lg">{{event.name}}</a>
 		{% endfor %}
 
 		<form action="" method="post" class="my-3">
@@ -31,16 +31,15 @@
 
 
 <div class="container-fluid ">
-	<div class="row gy-3" id="groups-row">
+	<div class="row gy-3" id="events-row">
 
-		{% for group in groups %}
+		{% for event in events %}
 
 		<div class="col-12 col-lg h-100">
-			<div class="card text-center group-card">
+			<div class="card text-center event-card">
 				<div class="card-body py-xl-5">
-					<h2 class="group-header fw-bold my-0 my-xl-2">{{ group.uppercase_name }}</h2>
-					<p class="group-points my-0 my-xl-3">{{ group.points }}</p>
-					<a href="{% url 'group' group.name %}" class="stretched-link">
+					<h2 class="event-header fw-bold my-0 my-xl-2">{{ event.name }}</h2>
+					<a href="{% url 'event' event.slug %}" class="stretched-link">
 					</a>
 				</div>
 			</div>

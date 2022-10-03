@@ -1,35 +1,58 @@
 from django.shortcuts import get_object_or_404, render, HttpResponseRedirect
 from django.urls import reverse
 
-from .models import Group, PointsHistory
+from .models import Event, Group, PointsHistory
 
 # Create your views here.
 
 
 def index(request):
 
-    if request.method == "POST":
+    # if request.method == "POST":
 
-        record_obj = Group.objects.all()
+    #     record_obj = Group.objects.all()
+
+    #     if 'reset' in request.POST:
+
+    #         # setattr(record_obj, 'points', 0)
+    #         # record_obj.save(update_fields=['points'])
+    #         record_obj.update(points=0)
+
+    #         group_histories = PointsHistory.objects.all()
+    #         group_histories.delete()
+
+    return render(request, "index.html", {
+        'events': Event.objects.all()
+    })
+
+
+def event_view(request, event):
+
+    groups_obj = Group.objects.filter(
+        event__slug=event)  # event.slug = event slug
+
+    if request.method == "POST":
 
         if 'reset' in request.POST:
 
             # setattr(record_obj, 'points', 0)
             # record_obj.save(update_fields=['points'])
-            record_obj.update(points=0)
+            groups_obj.update(points=0)
 
             group_histories = PointsHistory.objects.all()
             group_histories.delete()
 
-    return render(request, "index.html", {
-        'groups': Group.objects.all()
+    return render(request, "event.html", {
+        'event': get_object_or_404(Event, slug=event),
+        'groups': groups_obj
     })
 
 
-def group_view(request, group):
+def group_view(request, event, group):
 
     def _render(request, group):
         return render(request, "group.html", {
+            'event': get_object_or_404(Event, slug=event),
             'group': get_object_or_404(Group, pk=group)
         })
 
@@ -70,7 +93,7 @@ def group_view(request, group):
     return _render(request, group)
 
 
-def history_view(request, group):
+def history_view(request, event, group):
 
     history_records = PointsHistory.objects.values_list(
         'offset', flat=True).filter(group=group).reverse()
@@ -85,6 +108,7 @@ def history_view(request, group):
     print(history_table)
 
     return render(request, "history.html", {
+        'event': get_object_or_404(Event, slug=event),
         'group': get_object_or_404(Group, pk=group),
         'history': list(history_table)
     })

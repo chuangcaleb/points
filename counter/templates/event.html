@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="event-offcanvas" aria-labelledby="event-offcanvas-label">
+
+	<div class="offcanvas-header">
+
+		<h3 class="offcanvas-title" id="event-offcanvas-label">{{event.name}}</h3>
+
+		<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+
+	</div>
+	<div class="offcanvas-body">
+
+		{% for group in groups %}
+		<a href="{% url 'group' event.slug group.name %}" class="btn btn-primary btn-lg">{{group.uppercase_name}}</a>
+		{% endfor %}
+
+		<a href="{% url 'index' %}">
+			<button type="button" class="btn btn-secondary btn-lg me-2">
+				<i class="bi bi-arrow-left-circle-fill" style="font-size:1em;"></i> Return to Index
+			</button></a>
+
+		<form action="" method="post" class="my-3 d-inline-block">
+			{% csrf_token %}
+			{% comment %} <button type="submit" name="reset" value="" class="btn btn-outline-danger">Reset All</button>
+			{% endcomment %}
+			<input type="submit" onclick="return confirm('Are you sure you want to reset everyone\'s points?')"
+				name="reset" value="Reset All" class="btn btn-lg btn-outline-danger" />
+		</form>
+	</div>
+</div>
+
+
+<button type="button" class="position-relative btn btn-floating" style="top:0px; z-index: 2" data-bs-toggle="offcanvas"
+	href="#event-offcanvas" role="button" aria-controls="event-offcanvas">
+	<i class="bi bi-list" style="font-size:2.7em;"></i>
+</button>
+
+
+<div class="container-fluid ">
+	<div class="row gy-3" id="groups-row">
+
+		{% for group in groups %}
+
+		<div class="col-12 col-lg h-100">
+			<div class="card text-center group-card">
+				<div class="card-body py-xl-5">
+					<h2 class="group-header fw-bold my-0 my-xl-2">{{ group.uppercase_name }}</h2>
+					<p class="group-points my-0 my-xl-3">{{ group.points }}</p>
+					<a href="{% url 'group' event.slug group.name %}" class="stretched-link">
+					</a>
+				</div>
+			</div>
+		</div>
+
+		{% endfor %}
+
+	</div>
+</div>
+
+{% endblock %}

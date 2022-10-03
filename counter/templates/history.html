@@ -6,7 +6,7 @@
 
 {% block body %}
 
-<a href="{% url 'group' group.name %}">
+<a href="{% url 'group' event.slug group.name %}">
 	<button type="button" class=" btn btn-floating" style="top:0px;">
 		<i class="bi bi-arrow-left-circle-fill" style="font-size:2.7em;"></i>
 	</button></a>
