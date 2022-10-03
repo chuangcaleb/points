@@ -7,7 +7,8 @@ from django.template.defaultfilters import slugify
 class Event(models.Model):
 
     name = models.CharField(max_length=200, primary_key=True)
-    slug = models.SlugField('slug', max_length=64,  null=True)
+    slug = models.SlugField('slug', max_length=64)
+    css = models.TextField(default="", blank=True)
     # slug = models.SlugField('slug', max_length=64, unique=True, null=False)
 
     def __str__(self):

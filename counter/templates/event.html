@@ -1,6 +1,14 @@
 {% extends "layout.html" %}
 
+{% block headerinsert %}
+<style>
+	{{event.css}}
+</style>
+{% endblock %}
+
 {% block body %}
+
+
 
 <div class="offcanvas offcanvas-start" tabindex="-1" id="event-offcanvas" aria-labelledby="event-offcanvas-label">
 
@@ -35,10 +43,28 @@
 					</button>
 				</div>
 				<span style="color:red; list-style-type: none;">
-					{{ form.name.errors }}
-					{{ form.non_field_errors }}
+					{{ name_form.name.errors }}
+					{{ name_form.non_field_errors }}
+				</span>
+
+			</div>
+		</form>
+
+		<form action="" method="post">
+			{% csrf_token %}
+
+			<div class="mb-4">
+				<textarea aria-describedby="Update CSS" aria-label="Update CSS" class="form-control" id="input"
+					name="css" placeholder="Update CSS" type="text"></textarea>
+				<button type="submit" class="btn btn-primary" id="submit">
+					<i class="bi bi-pencil-fill" style="font-size:1em;"></i> Update
+				</button>
+				<span style="color:red; list-style-type: none;">
+					{{ name_form.name.errors }}
+					{{ name_form.non_field_errors }}
 				</span>
 			</div>
+
 		</form>
 
 		<form action="" method="post">

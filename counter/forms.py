@@ -3,7 +3,7 @@ from .models import Event, Group
 # from django.utils.translation import gettext_lazy as _
 
 
-class EventForm(ModelForm):
+class NewEventForm(ModelForm):
 
     class Meta:
         model = Event
@@ -11,8 +11,15 @@ class EventForm(ModelForm):
         fields = ['name']
 
 
-class GroupForm(ModelForm):
+class NewGroupForm(ModelForm):
     class Meta:
         model = Group
 
         fields = ['name']
+
+
+class UpdateCssForm(ModelForm):
+    class Meta:
+        model = Event
+
+        fields = ['css']
