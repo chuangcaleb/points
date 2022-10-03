@@ -1,3 +1,11 @@
+#main {
+  background-image: url("https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fhdqwalls.com%2Fwallpapers%2Fpubg-monochrome-4k-ko.jpg&f=1&nofb=1&ipt=9ccf49c6c1e5efc20bd9fafa0bb5f6d730797e259ea8d580d6be7ae7c4a73a28&ipo=images");
+  height: 100vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
 .group-header {
   font-size: 2.8em;
 }
@@ -24,7 +32,13 @@
   }
 }
 
-#groups-row :nth-child(1) .card {
+#groups-row .card {
+  background-color: rgba(241, 166, 58, 0.6);
+  color: white;
+  font-family: Avenir Next;
+}
+
+/* #groups-row :nth-child(1) .card {
   background-color: rgb(247, 123, 123);
 }
 #groups-row :nth-child(2) .card {
@@ -32,7 +46,7 @@
 }
 #groups-row :nth-child(3) .card {
   background-color: rgb(144, 247, 158);
-}
+} */
 
 .group-card:hover {
   border: 2px black solid;

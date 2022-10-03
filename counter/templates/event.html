@@ -2,7 +2,7 @@
 
 {% block headerinsert %}
 <style>
-	{{event.css}}
+
 </style>
 {% endblock %}
 
@@ -50,10 +50,16 @@
 			</div>
 		</form>
 
-		<form action="" method="post">
+		<form action="" method="post" class="mb-3 border bg-light p-2">
 			{% csrf_token %}
 
-			<div class="mb-4">
+			{{css_form}}
+
+			<button type="submit" class="btn btn-primary d-block mt-3" id="submit">
+				<i class="bi bi-pencil-fill" style="font-size:1em;"></i> Update CSS
+			</button>
+
+			{% comment %} <div class="mb-4">
 				<textarea aria-describedby="Update CSS" aria-label="Update CSS" class="form-control" id="input"
 					name="css" placeholder="Update CSS" type="text"></textarea>
 				<button type="submit" class="btn btn-primary" id="submit">
@@ -63,7 +69,7 @@
 					{{ name_form.name.errors }}
 					{{ name_form.non_field_errors }}
 				</span>
-			</div>
+			</div> {% endcomment %}
 
 		</form>
 

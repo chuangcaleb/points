@@ -34,16 +34,27 @@ def index(request):
 
 def event_view(request, event):
 
+    event_obj = get_object_or_404(Event, slug=event)
+
     def get_groups():
         # event.slug = event slug
         return Group.objects.filter(event__slug=event)
 
-    if request.method == "POST":
+    def _default_render():
 
+        return render(request, "event.html", {
+            'event': get_object_or_404(Event, slug=event),
+            'name_form': NewGroupForm(),
+            'css_form': UpdateCssForm(instance=event_obj),
+            'groups': get_groups()
+        })
+
+    if request.method == "POST":
+        print(request.POST)
+
+        # delete event, return to index
         if 'delete_event' in request.POST:
 
-            # delete event, return to index
-            event_obj = get_object_or_404(Event, slug=event)
             event_obj.delete()  # This delete cascades to delete relevant groups
 
             return redirect('index')
@@ -59,6 +70,8 @@ def event_view(request, event):
             group_histories = PointsHistory.objects.filter(
                 group__in=groups_obj)
             group_histories.delete()
+
+            return _default_render()
 
         if 'name' in request.POST:
 
@@ -76,38 +89,28 @@ def event_view(request, event):
             return render(request, "event.html", {
                 'event': get_object_or_404(Event, slug=event),
                 'name_form': name_form,
-                'css_form': UpdateCssForm(),
+                'css_form': UpdateCssForm(instance=event_obj),
                 'groups': get_groups()
             })
 
-        if 'css' in request.POST:
+        # Else, all other requests are CSS edits
+        css_form = UpdateCssForm(data=request.POST, instance=event_obj)
 
-            event_obj = get_object_or_404(Event, slug=event)
+        if css_form.is_valid():
 
-            css_form = UpdateCssForm(request.POST, instance=event_obj)
+            # Create entry in User model
+            css_form.save()
 
-            if css_form.is_valid():
+        return render(request, "event.html", {
+            'event': get_object_or_404(Event, slug=event),
+            'name_form': NewGroupForm(),
+            'css_form': css_form,
+            'groups': get_groups()
+        })
 
-                updated_obj = css_form.save(commit=False)
-                updated_obj.points = 0
-                # group.event_id = get_object_or_404(Event, slug=event)
+    else:
 
-                # Create entry in User model
-                css_form.save()
-
-            return render(request, "event.html", {
-                'event': get_object_or_404(Event, slug=event),
-                'name_form': NewGroupForm(),
-                'css_form': css_form,
-                'groups': get_groups()
-            })
-
-    return render(request, "event.html", {
-        'event': get_object_or_404(Event, slug=event),
-        'name_form': NewGroupForm(),
-        'css_form': UpdateCssForm(),
-        'groups': get_groups()
-    })
+        return _default_render()
 
 
 def group_view(request, event, group):

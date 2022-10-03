@@ -22,4 +22,5 @@ class UpdateCssForm(ModelForm):
     class Meta:
         model = Event
 
-        fields = ['css']
+        fields = ['bg_url']
+        label = {'bg_url': 'Background URL', }

@@ -8,8 +8,10 @@ class Event(models.Model):
 
     name = models.CharField(max_length=200, primary_key=True)
     slug = models.SlugField('slug', max_length=64)
-    css = models.TextField(default="", blank=True)
+    # css = models.TextField(default="", blank=True)
     # slug = models.SlugField('slug', max_length=64, unique=True, null=False)
+    bg_url = models.CharField(max_length=500, null=True, blank=True)
+    # color = models.CharField(max_length=500, null=True, blank=True)
 
     def __str__(self):
         return self.name
