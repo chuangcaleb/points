@@ -27,11 +27,13 @@ class Event(models.Model):
             return temp_font.replace("&#x27;", "'")
 
         # Sanitize font css
-        self.font = sanitize_css(self.font)
+        if self.font:
+            self.font = sanitize_css(self.font)
 
         # Only generates the slug on first creation
         if not self.slug:
             self.slug = slugify(self.name)
+
         super().save(*args, **kwargs)
 
 
