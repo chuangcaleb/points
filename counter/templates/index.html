@@ -2,34 +2,38 @@
 
 {% block body %}
 
-<div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+{% comment %}
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="index-offcanvas" aria-labelledby="index-offcanvas-label">
 	<div class="offcanvas-header">
-		<h3 class="offcanvas-title" id="offcanvasExampleLabel">Menu</h3>
+		<h3 class="offcanvas-title" id="index-offcanvas-label">Menu</h3>
 		<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 	</div>
 	<div class="offcanvas-body">
 
 		{% for event in events %}
-		<a href="{% url 'event' event %}" class="btn btn-primary btn-lg">{{event.name}}</a>
+		<a href="{% url 'event' event %}" class="btn btn-primary btn-lg mb-2">{{event.name}}</a>
 		{% endfor %}
 
 	</div>
 </div>
 
 <button type="button" class="position-relative btn btn-floating" style="top:0px; z-index: 2" data-bs-toggle="offcanvas"
-	href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+	href="#index-offcanvas" role="button" aria-controls="index-offcanvas">
 	<i class="bi bi-list" style="font-size:2.7em;"></i>
 </button>
 
+{% endcomment %}
 
-<div class="container-fluid ">
+
+<div class="container mt-3">
 	<div class="row gy-3" id="events-row">
 
 		{% for event in events %}
 
-		<div class="col-12 col-lg h-100">
+		<div class="col-auto h-100">
 			<div class="card text-center event-card">
-				<div class="card-body py-xl-5">
+				<div class="card-body">
 					<h2 class="event-header fw-bold my-0 my-xl-2">{{ event.name }}</h2>
 					<a href="{% url 'event' event.slug %}" class="stretched-link">
 					</a>
@@ -40,6 +44,31 @@
 		{% endfor %}
 
 	</div>
+
+	<form action="" method="post" class="mt-4 d-flex flex-column">
+		{% csrf_token %}
+		<div class="mx-auto">
+			<div class="input-group input-group-lg">
+
+				<input aria-describedby="New Event" aria-label="New Event" class="form-control" id="input" name="name"
+					placeholder="New Event" type="text">
+
+				<button type="submit" class="btn btn-primary" id="submit">
+					<i class="bi bi-plus-circle-fill" style="font-size:1em;"></i>
+				</button>
+
+			</div>
+		</div>
+
+		<div class="mx-auto mt-3">
+
+			<span style="color:red; list-style-type: none;">
+				{{ form.name.errors }}
+				{{ form.non_field_errors }}
+			</span>
+		</div>
+	</form>
+
 </div>
 
 {% endblock %}

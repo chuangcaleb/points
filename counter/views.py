@@ -1,6 +1,8 @@
 from django.shortcuts import get_object_or_404, render, HttpResponseRedirect
 from django.urls import reverse
 
+from counter.forms import EventForm
+
 from .models import Event, Group, PointsHistory
 
 # Create your views here.
@@ -8,22 +10,27 @@ from .models import Event, Group, PointsHistory
 
 def index(request):
 
-    # if request.method == "POST":
+    if request.method == "POST":
 
-    #     record_obj = Group.objects.all()
+        record_obj = Group.objects.all()
+        form = EventForm(request.POST)
 
-    #     if 'reset' in request.POST:
+        if form.is_valid():
 
-    #         # setattr(record_obj, 'points', 0)
-    #         # record_obj.save(update_fields=['points'])
-    #         record_obj.update(points=0)
+            # Create entry in User model
+            event = form.save()
 
-    #         group_histories = PointsHistory.objects.all()
-    #         group_histories.delete()
+        return render(request, "index.html", {
+            'events': Event.objects.all(),
+            'form': form
+        })
 
-    return render(request, "index.html", {
-        'events': Event.objects.all()
-    })
+    else:
+
+        return render(request, "index.html", {
+            'events': Event.objects.all(),
+            'form': EventForm()
+        })
 
 
 def event_view(request, event):
