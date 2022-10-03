@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, render, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render, HttpResponseRedirect, redirect
 from django.urls import reverse
 
 from counter.forms import EventForm
@@ -40,12 +40,19 @@ def event_view(request, event):
 
     if request.method == "POST":
 
+        if 'delete' in request.POST:
+            # delete event, return to index
+            event = get_object_or_404(Event, slug=event)
+            event.delete()  # This delete cascades to delete relevant groups
+
+            return redirect('index')
+
         if 'reset' in request.POST:
 
-            # setattr(record_obj, 'points', 0)
-            # record_obj.save(update_fields=['points'])
+            # Update all groups to have 0 points
             groups_obj.update(points=0)
 
+            # Delete all relevant history
             group_histories = PointsHistory.objects.all()
             group_histories.delete()
 
