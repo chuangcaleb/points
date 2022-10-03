@@ -1,6 +1,5 @@
 from django.forms import ModelForm
 from .models import Event, Group
-# from django.utils.translation import gettext_lazy as _
 
 
 class NewEventForm(ModelForm):
@@ -21,6 +20,7 @@ class NewGroupForm(ModelForm):
 class UpdateCssForm(ModelForm):
     class Meta:
         model = Event
-
         fields = ['bg_url']
-        label = {'bg_url': 'Background URL', }
+        labels = {
+            'bg_url': 'Background Image URL',
+        }

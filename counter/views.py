@@ -108,7 +108,7 @@ def event_view(request, event):
             'groups': get_groups()
         })
 
-    else:
+    else:  # Render default for GET requests
 
         return _default_render()
 
