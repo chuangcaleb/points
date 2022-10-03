@@ -11,5 +11,11 @@ class EventAdmin(admin.ModelAdmin):
 
 admin.site.register(Event, EventAdmin)
 
-admin.site.register(Group)
+
+class GroupAdmin(admin.ModelAdmin):
+    exclude = ['slug']
+
+
+admin.site.register(Group, GroupAdmin)
+
 admin.site.register(PointsHistory)

@@ -102,7 +102,7 @@
 				<div class="card-body py-xl-5">
 					<h2 class="group-header fw-bold my-0 my-xl-2">{{ group.uppercase_name }}</h2>
 					<p class="group-points my-0 my-xl-3">{{ group.points }}</p>
-					<a href="{% url 'group' event.slug group.name %}" class="stretched-link">
+					<a href="{% url 'group' event.slug group.slug %}" class="stretched-link">
 					</a>
 				</div>
 			</div>

@@ -118,12 +118,12 @@ def group_view(request, event, group):
     def _render(request, group):
         return render(request, "group.html", {
             'event': get_object_or_404(Event, slug=event),
-            'group': get_object_or_404(Group, pk=group)
+            'group': get_object_or_404(Group, slug=group)
         })
 
     if request.method == "POST":
 
-        group_obj = get_object_or_404(Group, pk=group)
+        group_obj = get_object_or_404(Group, slug=group)
 
         if 'delete_group' in request.POST:
 
