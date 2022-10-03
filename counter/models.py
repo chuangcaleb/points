@@ -16,7 +16,7 @@ class Event(models.Model):
     def save(self, *args, **kwargs):
         # Only generates the slug on first creation
         if not self.slug:
-            self.slug = slugify(self.title)
+            self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
 

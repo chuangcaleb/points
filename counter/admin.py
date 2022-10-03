@@ -4,6 +4,12 @@ from .models import Event, Group, PointsHistory
 
 # Register your models here.
 
-admin.site.register(Event)
+
+class EventAdmin(admin.ModelAdmin):
+    exclude = ['slug']
+
+
+admin.site.register(Event, EventAdmin)
+
 admin.site.register(Group)
 admin.site.register(PointsHistory)
