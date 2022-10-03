@@ -53,7 +53,8 @@ def event_view(request, event):
             groups_obj.update(points=0)
 
             # Delete all relevant history
-            group_histories = PointsHistory.objects.all()
+            group_histories = PointsHistory.objects.filter(
+                group__in=groups_obj)
             group_histories.delete()
 
     return render(request, "event.html", {
