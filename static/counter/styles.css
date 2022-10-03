@@ -47,5 +47,5 @@
 @font-face {
   font-family: "HeadlinerNo45"; /*a name to be used later*/
   src: local("HeadlinerNo45"),
-    url("../static/HeadlinerNo45.ttf") format("truetype");
+    url("../counter/HeadlinerNo45.ttf") format("truetype");
 }
