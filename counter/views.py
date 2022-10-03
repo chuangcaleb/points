@@ -40,6 +40,28 @@ def event_view(request, event):
 
     if request.method == "POST":
 
+        print(request.POST)
+
+        if 'delete_event' in request.POST:
+            print("delete")
+            # delete event, return to index
+            event_obj = get_object_or_404(Event, slug=event)
+            event_obj.delete()  # This delete cascades to delete relevant groups
+
+            return redirect('index')
+
+        if 'reset' in request.POST:
+
+            groups_obj = get_groups()
+
+            # Update all groups to have 0 points
+            groups_obj.update(points=0)
+
+            # Delete all relevant history
+            group_histories = PointsHistory.objects.filter(
+                group__in=groups_obj)
+            group_histories.delete()
+
         if 'name' in request.POST:
 
             form = GroupForm(request.POST)
@@ -58,25 +80,6 @@ def event_view(request, event):
                 'form': form,
                 'groups': get_groups()
             })
-
-        if 'delete_event' in request.POST:
-            # delete event, return to index
-            event = get_object_or_404(Event, slug=event)
-            event.delete()  # This delete cascades to delete relevant groups
-
-            return redirect('index')
-
-        if 'reset' in request.POST:
-
-            groups_obj = get_groups()
-
-            # Update all groups to have 0 points
-            groups_obj.update(points=0)
-
-            # Delete all relevant history
-            group_histories = PointsHistory.objects.filter(
-                group__in=groups_obj)
-            group_histories.delete()
 
     return render(request, "event.html", {
         'event': get_object_or_404(Event, slug=event),
