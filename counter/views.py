@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, HttpResponseRedirect, redirect
 from django.urls import reverse
 
-from counter.forms import NewEventForm, NewGroupForm, UpdateCssForm
+from .forms import NewEventForm, NewGroupForm, UpdateCssForm, UpdateGroupCssForm
 
 from .models import Event, Group, PointsHistory
 
@@ -99,8 +99,6 @@ def event_view(request, event):
         css_form = UpdateCssForm(data=request.POST, instance=event_obj)
 
         if css_form.is_valid():
-
-            # Create entry in User model
             css_form.save()
 
         return render(request, "event.html", {
@@ -117,15 +115,18 @@ def event_view(request, event):
 
 def group_view(request, event, group):
 
+    group_obj = get_object_or_404(Group, slug=group)
+
     def _render(request, group):
         return render(request, "group.html", {
             'event': get_object_or_404(Event, slug=event),
-            'group': get_object_or_404(Group, slug=group)
+            'group': get_object_or_404(Group, slug=group),
+            'css_form': UpdateGroupCssForm(instance=group_obj)
         })
 
     if request.method == "POST":
 
-        group_obj = get_object_or_404(Group, slug=group)
+        print(request.POST)
 
         if 'delete_group' in request.POST:
 
@@ -141,11 +142,9 @@ def group_view(request, event, group):
                 group=group_obj)
             group_histories.delete()
 
-        else:  # POST request to offset
-
-            # Terminate if 0 or null offset
-            if request.POST["offset"] in ('', 0):
-                return _render(request, group)
+        # If offset exists AND is not null
+        if ('offset' in request.POST) and (
+                request.POST["offset"] not in ('', 0)):
 
             # Offset points
             offset = int(request.POST["offset"])
@@ -160,6 +159,13 @@ def group_view(request, event, group):
                 offset=offset,
             )
             history_obj.save()
+
+        else:  # POST request to update css
+
+            group_css_form = UpdateGroupCssForm(
+                data=request.POST, instance=group_obj)
+            if group_css_form.is_valid():
+                group_css_form.save()
 
     # At any GET and at the end of POST, render
     return _render(request, group)

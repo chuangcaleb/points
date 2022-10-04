@@ -30,3 +30,12 @@ class UpdateCssForm(ModelForm):
             'heading_size': "Heading Font Size",
             'points_size': "Points Font Size",
         }
+
+
+class UpdateGroupCssForm(ModelForm):
+    class Meta:
+        model = Group
+        fields = ['color']
+        labels = {
+            'color': 'Group Card Colour',
+        }

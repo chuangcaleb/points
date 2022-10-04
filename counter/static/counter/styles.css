@@ -51,6 +51,5 @@
 }
 
 #events-menu {
-  /* box-shadow: ; */
-  text-shadow: 1px 1px white;
+  text-shadow: 2px 2px lightgray;
 }

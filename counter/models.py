@@ -45,7 +45,7 @@ class Group(models.Model):
         Event, on_delete=models.CASCADE, related_name="event_group"
     )
     slug = models.SlugField('slug', max_length=64, null=True)
-    color = models.CharField(max_length=20, null=True, blank=True)
+    color = models.CharField(max_length=30, null=True, blank=True)
 
     class Meta:
         indexes = [
