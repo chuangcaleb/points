@@ -151,14 +151,14 @@
 </div>
 
 
-<button type="button" class="position-relative btn" style="top:0px; z-index: 2" data-bs-toggle="offcanvas"
+<button id="events-menu" type="button" class="position-relative btn" style="top:0px; z-index: 2" data-bs-toggle="offcanvas"
 	href="#event-offcanvas" role="button" aria-controls="event-offcanvas">
 	<i class="bi bi-list" style="font-size:2.7em;"></i>
 </button>
 
 
 <div class="container-fluid d-flex h-100 position-absolute top-0">
-	<div class="row gy-3 my-auto w-100" id="groups-row">
+	<div class="row gy-3 gx-0 gx-lg-3 my-auto w-100 ms-0" id="groups-row">
 
 		{% for group in groups %}
 
