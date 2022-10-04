@@ -1,3 +1,6 @@
+import json
+from django.core import serializers
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, HttpResponseRedirect, redirect
 from django.urls import reverse
 
@@ -180,3 +183,10 @@ def history_view(request, event, group):
         'group': get_object_or_404(Group, pk=group),
         'history': list(history_table)
     })
+
+
+def event_json_response(request, event):
+    event_obj = Group.objects.filter(event__slug=event)
+    event_dict = {i.slug: i.points for i in event_obj}
+    event_json = json.dumps(event_dict)
+    return HttpResponse(event_json, content_type='application/json')

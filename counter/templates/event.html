@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% load static %}
 
 {% block headerinsert %}
 {% if event.font_link %}
@@ -35,6 +36,28 @@
 		{% endif %}
 	}
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+	(function update() {
+		$.ajax({
+		  url: "api/{{event.slug}}",
+		  type: "get",
+		  success: function (data) {
+			document.querySelectorAll(".group-points").forEach((points_disp) => {
+			  var group = points_disp.id.replace("points-", "");
+			  var updated_points = data[group];
+			  points_disp.innerHTML = updated_points;
+			});
+		  },
+		  failure: function (data) {
+			alert("Error loading the points API");
+		  },
+		}).then(function () {
+		  // on completion, restart
+		  setTimeout(update, 3000); // function refers to itself
+		});
+	  })(); // automatically invoke for first run
+</script>
 {% endblock %}
 
 {% block body %}
@@ -143,7 +166,7 @@
 			<div class="card text-center group-card">
 				<div class="card-body py-xl-5">
 					<h2 class="group-header fw-bold my-0 my-xl-2">{{ group.uppercase_name }}</h2>
-					<p class="group-points my-0 my-xl-3">{{ group.points }}</p>
+					<p class="group-points my-0 my-xl-3" id="points-{{ group.slug }}">{{ group.points }}</p>
 					<a href="{% url 'group' event.slug group.slug %}" class="stretched-link">
 					</a>
 				</div>
