@@ -126,8 +126,6 @@ def group_view(request, event, group):
 
     if request.method == "POST":
 
-        print(request.POST)
-
         if 'delete_group' in request.POST:
 
             group_obj.delete()
