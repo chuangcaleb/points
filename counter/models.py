@@ -22,13 +22,13 @@ class Event(models.Model):
 
     def save(self, *args, **kwargs):
 
-        def sanitize_css(string):
+        def _sanitize_css(string):
             temp_font = html.escape(string)
             return temp_font.replace("&#x27;", "'")
 
         # Sanitize font css
         if self.font:
-            self.font = sanitize_css(self.font)
+            self.font = _sanitize_css(self.font)
 
         # Only generates the slug on first creation
         if not self.slug:
