@@ -7,6 +7,7 @@ from .models import Event, Group, PointsHistory
 
 class EventAdmin(admin.ModelAdmin):
     exclude = ['slug']
+    readonly_fields = ('id',)
 
 
 admin.site.register(Event, EventAdmin)
@@ -14,6 +15,7 @@ admin.site.register(Event, EventAdmin)
 
 class GroupAdmin(admin.ModelAdmin):
     exclude = ['slug']
+    readonly_fields = ('id',)
 
 
 admin.site.register(Group, GroupAdmin)

@@ -1,11 +1,13 @@
 import json
+
 from django.core import serializers
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, render, HttpResponseRedirect, redirect
+from django.shortcuts import (HttpResponseRedirect, get_object_or_404,
+                              redirect, render)
 from django.urls import reverse
 
-from .forms import NewEventForm, NewGroupForm, UpdateCssForm, UpdateGroupCssForm
-
+from .forms import (NewEventForm, NewGroupForm, UpdateCssForm,
+                    UpdateGroupCssForm)
 from .models import Event, Group, PointsHistory
 
 # Create your views here.
@@ -19,7 +21,6 @@ def index(request):
 
         if form.is_valid():
 
-            # Create entry in User model
             form.save()
 
         return render(request, "index.html", {
@@ -81,11 +82,14 @@ def event_view(request, event):
 
             if name_form.is_valid():
 
-                group = name_form.save(commit=False)
-                group.points = 0
-                group.event_id = get_object_or_404(Event, slug=event)
+                # new_group = name_form.save(commit=False)
+                name_form.instance.points = 0
+                # new_group.points = 0
+                name_form.instance.event = get_object_or_404(
+                    Event, slug=event)
 
-                # Create entry in User model
+                # Create entry in Group model
+                # new_group.save()
                 name_form.save()
 
             return render(request, "event.html", {
@@ -115,14 +119,8 @@ def event_view(request, event):
 
 def group_view(request, event, group):
 
-    group_obj = get_object_or_404(Group, slug=group)
-
-    def _render(request, group):
-        return render(request, "group.html", {
-            'event': get_object_or_404(Event, slug=event),
-            'group': get_object_or_404(Group, slug=group),
-            'css_form': UpdateGroupCssForm(instance=group_obj)
-        })
+    event_obj = get_object_or_404(Event, slug=event)
+    group_obj = get_object_or_404(Group, event=event_obj, slug=group)
 
     if request.method == "POST":
 
@@ -166,13 +164,21 @@ def group_view(request, event, group):
                 group_css_form.save()
 
     # At any GET and at the end of POST, render
-    return _render(request, group)
+    return render(request, "group.html", {
+        'event': event_obj,
+        'group': group_obj,
+        'css_form': UpdateGroupCssForm(instance=group_obj)
+    })
 
 
 def history_view(request, event, group):
 
+    event_obj = get_object_or_404(Event, slug=event)
+    group_obj = get_object_or_404(Group, event=event_obj, slug=group)
+
     history_records = PointsHistory.objects.values_list(
-        'offset', flat=True).filter(group=group).reverse()
+        'offset', flat=True
+    ).filter(group=group_obj).reverse()
     history_table = [
         {
             'p': "green" if offset > 0 else "red",
@@ -183,8 +189,8 @@ def history_view(request, event, group):
     ]
 
     return render(request, "history.html", {
-        'event': get_object_or_404(Event, slug=event),
-        'group': get_object_or_404(Group, pk=group),
+        'event': event_obj,
+        'group': group_obj,
         'history': list(history_table)
     })
 
